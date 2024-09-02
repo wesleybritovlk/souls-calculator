@@ -1,0 +1,30 @@
+server.port: 8080
+
+spring:
+  profiles.active: dev
+  application:
+    name: souls-calculator-api
+
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      pool-name: SoulsCalculatorPool
+      maximum-pool-size: 7
+      minimum-idle: 5
+      idle-timeout: 30000
+      max-lifetime: 1800000
+      connection-timeout: 20000
+
+  jpa.properties.hibernate:
+      dialect: org.hibernate.dialect.PostgreSQLDialect
+      default_schema: users
+
+  flyway:
+    defaultSchema: users
+    schemas: public,users
+    locations: classpath:db/migration/public,classpath:db/migration/users
+    validate-on-migrate: true
+
+  jackson.property-naming-strategy: SNAKE_CASE
+
+logging.pattern.console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"

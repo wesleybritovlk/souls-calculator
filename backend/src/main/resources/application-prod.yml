@@ -1,0 +1,24 @@
+spring:
+  config.import: optional:classpath:secrets/secrets-prod.yml
+
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USER}
+    password: ${DB_PASS}
+
+  jpa:
+    show-sql: false
+    hibernate.ddl-auto: validate
+
+  flyway:
+    url: ${DB_URL}
+    username: ${DB_USER}
+    password: ${DB_PASS}
+
+app.jwt.expires-in: 3600
+
+logging.level:
+  root: warn
+  org:
+    springframework.web: debug
+    hibernate: error
