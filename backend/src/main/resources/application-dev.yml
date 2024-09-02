@@ -1,0 +1,26 @@
+spring:
+  config.import: classpath:secrets/secrets-dev.yml
+
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USER}
+    password: ${DB_PASS}
+
+  jpa:
+    show-sql: true
+    hibernate.ddl-auto: none
+
+  flyway:
+    url: ${DB_URL}
+    user: ${DB_USER}
+    password: ${DB_PASS}
+
+app.jwt.expires-in: 600
+
+logging.level:
+  root: info
+  org:
+    springframework.web: info
+    hibernate:
+      SQL: debug
+      type.descriptor.sql.BasicBinder: trace
