@@ -42,7 +42,7 @@ public class DemonSoulsImpl implements DemonSouls {
             soulsNext += calculateOneToEleven(arrowLevel);
         else
             soulsNext += calculateAfterElevenSoulsForumla(arrowLevel);
-        if (soulsNext > currentSouls)
+        if (soulsNext >= currentSouls)
             soulsNext -= currentSouls;
         return new SoulsNext(soulsNext);
     }
