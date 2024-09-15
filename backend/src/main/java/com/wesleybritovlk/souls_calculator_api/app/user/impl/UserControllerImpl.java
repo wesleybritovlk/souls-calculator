@@ -37,7 +37,7 @@ public class UserControllerImpl implements UserController {
     @PutMapping
     public ResponseEntity<Map> update(JwtAuthenticationToken token, @RequestBody @Valid UserRequest.Update request) {
         var response = service.update(token, request);
-        var resource = toMessage("User updated successful", response);
+        var resource = toMessage("User updated successfuly", response);
         return ResponseEntity.ok(resource);
     }
 
