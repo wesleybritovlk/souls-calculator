@@ -15,7 +15,7 @@ spring:
     user: ${DB_USER}
     password: ${DB_PASS}
 
-app.jwt.expires-in: 600
+app.global.ttl: 600
 
 logging.level:
   root: info

@@ -15,4 +15,10 @@ public class UserRequest {
             String password,
             RoleEntity role) {
     }
+
+    @Builder
+    public record Update(
+            String username,
+            String email) {
+    }
 }

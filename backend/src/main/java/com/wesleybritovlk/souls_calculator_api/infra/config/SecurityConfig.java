@@ -42,7 +42,9 @@ public class SecurityConfig {
         protected void userRequests(
                         AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry request) {
                 final String auth = "SCOPE_USER";
+                request.requestMatchers(HttpMethod.DELETE, "api/v1/auth/logout").hasAuthority(auth);
                 request.requestMatchers(HttpMethod.GET, "api/v1/auth/refresh_token").hasAuthority(auth);
+                request.requestMatchers("api/v1/users/**").hasAuthority(auth);
         }
 
         @Bean
@@ -54,7 +56,7 @@ public class SecurityConfig {
                                 .authorizeHttpRequests(requests -> {
                                         userRequests(requests);
                                         requests.requestMatchers(HttpMethod.POST, WHITE_LIST).permitAll();
-                                        requests.anyRequest().permitAll();
+                                        requests.anyRequest().authenticated();
                                 })
                                 .oauth2ResourceServer(oauth2 -> oauth2.jwt(withDefaults()))
                                 .exceptionHandling(exceptionHandling -> exceptionHandling
