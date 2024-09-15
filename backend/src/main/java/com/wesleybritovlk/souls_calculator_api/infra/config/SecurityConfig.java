@@ -45,6 +45,7 @@ public class SecurityConfig {
                 request.requestMatchers(HttpMethod.DELETE, "api/v1/auth/logout").hasAuthority(auth);
                 request.requestMatchers(HttpMethod.GET, "api/v1/auth/refresh_token").hasAuthority(auth);
                 request.requestMatchers("api/v1/users/**").hasAuthority(auth);
+                request.requestMatchers("api/v1/games/**").hasAuthority(auth);
         }
 
         @Bean
