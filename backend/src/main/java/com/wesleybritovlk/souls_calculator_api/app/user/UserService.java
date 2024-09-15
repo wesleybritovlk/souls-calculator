@@ -1,28 +1,21 @@
 package com.wesleybritovlk.souls_calculator_api.app.user;
 
 import java.util.Optional;
-import java.util.Set;
 
-import org.springframework.stereotype.Service;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 
 import com.wesleybritovlk.souls_calculator_api.app.user.dto.UserRequest;
+import com.wesleybritovlk.souls_calculator_api.app.user.dto.UserResponse;
 
-import jakarta.transaction.Transactional;
-import lombok.RequiredArgsConstructor;
+public interface UserService {
 
-@Service
-@Transactional
-@RequiredArgsConstructor
-public class UserService {
-    private final UserMapper mapper;
-    private final UserRepository repository;
+    UserEntity save(UserRequest.Create request);
 
-    public UserEntity save(UserRequest.Create request) {
-        UserEntity entity = mapper.toEntity(request);
-        return repository.saveAndFlush(entity);
-    }
+    Optional<UserEntity> findByEmail(String email);
 
-    public Optional<UserEntity> findByEmail(String email) {
-        return repository.findByEmailAndDeletedAtNull(email);
-    }
+    UserResponse.Full find(JwtAuthenticationToken token);
+
+    UserResponse.Update update(JwtAuthenticationToken token, UserRequest.Update request);
+
+    void delete(JwtAuthenticationToken token);
 }
