@@ -12,40 +12,40 @@ import com.wesleybritovlk.souls_calculator_api.core.games.demonsouls.model.Demon
 @Component
 public class DemonSoulsImpl implements DemonSouls {
 
-    private static long calculateOneToEleven(int arrowLevel) {
+    private static double calculateOneToEleven(int level) {
         double weightOne = 17d;
         double weightSeven = 18;
-        int baseOne = 673, baseSeven = 793;
-        double souls = 0;
-        if (arrowLevel >= 2 && arrowLevel < 8) {
-            souls = baseOne + (arrowLevel - 2) * weightOne;
-            return round(souls);
+        double baseOne = 673, baseSeven = 793;
+        if (level >= 2 && level < 8) {
+            return baseOne + (level - 2) * weightOne;
         }
-        if (arrowLevel >= 8 && arrowLevel < 12) {
-            souls = baseSeven + (arrowLevel - 8) * weightSeven;
-            return round(souls);
+        if (level >= 8 && level < 12) {
+            return baseSeven + (level - 8) * weightSeven;
         }
-        return 0;
+        return 0d;
     }
 
-    private static long calculateAfterElevenSoulsForumla(int arrowLevel) {
-        double souls = 0.02 * pow(arrowLevel, 3) + 3.06 * pow(arrowLevel, 2) + 105.6 * arrowLevel - 895;
-        return round(souls);
+    private static double calculateAfterElevenSoulsForumla(int level) {
+        return 0.02 * pow(level, 3) + 3.06 * pow(level, 2) + 105.6 * level - 895;
     }
 
     @Override
     public SoulsNext calculateSouls(Souls request) {
-        long currentSouls = request.currentSouls();
         int arrowLevel = request.arrowLevel();
+        long currentSouls = request.currentSouls();
         long soulsNext = 0;
-        if (arrowLevel >= 1 && arrowLevel < 12)
-            soulsNext += calculateOneToEleven(arrowLevel);
-        else
-            soulsNext += calculateAfterElevenSoulsForumla(arrowLevel);
+        double soulsAmount = 0d;
+        for (int level = 1; level <= arrowLevel; ++level) {
+            if (level >= 1 && level < 12)
+                soulsAmount += calculateOneToEleven(level);
+            else
+                soulsAmount += calculateAfterElevenSoulsForumla(level);
+        }
+        soulsNext = round(soulsAmount);
+        if (soulsNext < currentSouls)
+            return new SoulsNext(soulsNext);
         if (soulsNext >= currentSouls)
             soulsNext -= currentSouls;
-        if (soulsNext < currentSouls)
-            soulsNext = 0;
         return new SoulsNext(soulsNext);
     }
 
