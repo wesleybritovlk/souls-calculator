@@ -16,15 +16,12 @@ spring:
       connection-timeout: 20000
 
   jpa.properties.hibernate:
-      dialect: org.hibernate.dialect.PostgreSQLDialect
-      default_schema: users
+    default_schema: users
 
   flyway:
     defaultSchema: users
     schemas: public,users
     locations: classpath:db/migration/public,classpath:db/migration/users
     validate-on-migrate: true
-
-  jackson.property-naming-strategy: SNAKE_CASE
 
 logging.pattern.console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
