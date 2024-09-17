@@ -1,20 +1,20 @@
-package com.wesleybritovlk.souls_calculator_api.core.games.demonsouls.impl;
+package com.wesleybritovlk.souls_calculator_api.core.games.darksouls3.impl;
 
 import static java.math.BigDecimal.ONE;
 import static java.math.BigDecimal.ZERO;
-import static java.math.RoundingMode.HALF_EVEN;
+import static java.math.RoundingMode.DOWN;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
 import org.springframework.stereotype.Component;
 
-import com.wesleybritovlk.souls_calculator_api.app.games.demonsouls.dto.DemonSoulsRequest.Souls;
+import com.wesleybritovlk.souls_calculator_api.app.games.darksouls3.dto.DarkSouls3Request.Souls;
 import com.wesleybritovlk.souls_calculator_api.core.common.CommonModel.SoulsNext;
-import com.wesleybritovlk.souls_calculator_api.core.games.demonsouls.DemonSouls;
+import com.wesleybritovlk.souls_calculator_api.core.games.darksouls3.DarkSouls3;
 
 @Component
-public class DemonSoulsImpl implements DemonSouls {
+public class DarkSouls3Impl implements DarkSouls3 {
 
     private static BigDecimal decimal(Number num) {
         return BigDecimal.valueOf(num.doubleValue());
@@ -23,8 +23,8 @@ public class DemonSoulsImpl implements DemonSouls {
     private static final BigDecimal TWELVE = decimal(12);
 
     private static BigDecimal selectOneToTwelve(BigDecimal level) {
-        return new BigDecimal[] { ZERO, decimal(673), decimal(690),
-                decimal(707), decimal(724), decimal(741), decimal(758),
+        return new BigDecimal[] { ZERO, decimal(673), decimal(689),
+                decimal(706), decimal(723), decimal(740), decimal(757),
                 decimal(775), decimal(793), decimal(811), decimal(829),
                 decimal(847) }[level.subtract(ONE).intValue()];
     }
@@ -47,7 +47,7 @@ public class DemonSoulsImpl implements DemonSouls {
             else
                 amount = amount.add(calculateWithSoulsForumla(level));
         }
-        BigInteger soulsNext = amount.setScale(0, HALF_EVEN).toBigIntegerExact(),
+        BigInteger soulsNext = amount.setScale(0, DOWN).toBigIntegerExact(),
                 currentSouls = request.currentSouls();
         if (soulsNext.compareTo(currentSouls) <= 0)
             return new SoulsNext(BigInteger.ZERO);
@@ -55,5 +55,4 @@ public class DemonSoulsImpl implements DemonSouls {
             soulsNext = soulsNext.subtract(currentSouls);
         return new SoulsNext(soulsNext);
     }
-
 }
