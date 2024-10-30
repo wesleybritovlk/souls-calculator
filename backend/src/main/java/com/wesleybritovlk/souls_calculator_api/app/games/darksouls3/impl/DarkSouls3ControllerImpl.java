@@ -1,7 +1,5 @@
 package com.wesleybritovlk.souls_calculator_api.app.games.darksouls3.impl;
 
-import java.util.Map;
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -12,6 +10,8 @@ import com.wesleybritovlk.souls_calculator_api.app.games.darksouls3.DarkSouls3Co
 import com.wesleybritovlk.souls_calculator_api.app.games.darksouls3.DarkSouls3Service;
 import com.wesleybritovlk.souls_calculator_api.app.games.darksouls3.dto.DarkSouls3Request;
 import com.wesleybritovlk.souls_calculator_api.core.common.CommonResource;
+import com.wesleybritovlk.souls_calculator_api.core.common.CommonResponse.MessageData;
+import com.wesleybritovlk.souls_calculator_api.core.common.CommonResponse.Souls;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +23,7 @@ public class DarkSouls3ControllerImpl implements DarkSouls3Controller {
     private final DarkSouls3Service service;
 
     @PostMapping("souls")
-    public ResponseEntity<Map> postCalculateSouls(@RequestBody @Valid DarkSouls3Request.Souls request) {
+    public ResponseEntity<MessageData<Souls>> postCalculateSouls(@RequestBody @Valid DarkSouls3Request.Souls request) {
         var response = service.calculateSouls(request);
         var resource = CommonResource.toMessage("Souls calculated successfuly", response);
         return ResponseEntity.ok(resource);

@@ -22,11 +22,11 @@ public class DarkSouls3Impl implements DarkSouls3 {
 
     private static final BigDecimal TWELVE = decimal(12);
 
+    private static final int[] START_SOULS = new int[] {
+            0, 673, 689, 706, 723, 740, 757, 775, 793, 811, 829, 847 };
+
     private static BigDecimal selectOneToTwelve(BigDecimal level) {
-        return new BigDecimal[] { ZERO, decimal(673), decimal(689),
-                decimal(706), decimal(723), decimal(740), decimal(757),
-                decimal(775), decimal(793), decimal(811), decimal(829),
-                decimal(847) }[level.subtract(ONE).intValue()];
+        return decimal(START_SOULS[level.subtract(ONE).intValue()]);
     }
 
     private static BigDecimal calculateWithSoulsForumla(BigDecimal level) {

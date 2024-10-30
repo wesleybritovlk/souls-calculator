@@ -11,7 +11,7 @@ public interface UserService {
 
     UserEntity save(UserRequest.Create request);
 
-    Optional<UserEntity> findByEmail(String email);
+    Optional<UserProjection.Auth> findAuth(String email);
 
     UserResponse.Full find(JwtAuthenticationToken token);
 

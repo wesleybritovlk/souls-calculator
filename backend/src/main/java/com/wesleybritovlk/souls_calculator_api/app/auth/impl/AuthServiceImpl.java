@@ -1,6 +1,5 @@
 package com.wesleybritovlk.souls_calculator_api.app.auth.impl;
 
-import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Supplier;
 
@@ -19,8 +18,8 @@ import com.wesleybritovlk.souls_calculator_api.app.user.UserService;
 import com.wesleybritovlk.souls_calculator_api.app.user.dto.UserRequest.Create;
 import com.wesleybritovlk.souls_calculator_api.core.role.RoleEntity;
 import com.wesleybritovlk.souls_calculator_api.core.role.RoleEntity.Role;
-import com.wesleybritovlk.souls_calculator_api.core.uuidmask.UUIDMask;
 import com.wesleybritovlk.souls_calculator_api.core.role.RoleRepository;
+import com.wesleybritovlk.souls_calculator_api.core.uuidmask.UUIDMask;
 import com.wesleybritovlk.souls_calculator_api.infra.util.exception.ExceptionMessages;
 
 import lombok.RequiredArgsConstructor;
@@ -41,20 +40,20 @@ public class AuthServiceImpl implements AuthService {
 
         @Override
         public AuthResponse login(AuthRequest.Login request) {
-                Optional<UserEntity> entity = userService.findByEmail(request.email());
+                var projection = userService.findAuth(request.email());
                 boolean matches = false;
-                if (entity.isPresent())
-                        matches = passwordEncoder.matches(request.password(), entity.get().getPassword());
-                if (entity.isEmpty() || !matches)
+                if (projection.isPresent())
+                        matches = passwordEncoder.matches(request.password(), projection.get().getPassword());
+                if (projection.isEmpty() || !matches)
                         throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "email or password is invalid!");
-                Token payload = mapper.toPayload(request, entity);
+                Token payload = mapper.toPayload(request, projection);
                 return tokenHelper.generateToken(payload);
         }
 
         @Override
         public AuthResponse register(AuthRequest.Register request) {
                 String password = passwordEncoder.encode(request.password());
-                RoleEntity role = roleRepo.findByRole(Role.USER);
+                RoleEntity role = roleRepo.findByName(Role.USER).orElseThrow();
                 Create userRequest = mapper.toRequest(request, password, role);
                 UserEntity entity = userService.save(userRequest);
                 Token payload = mapper.toPayload(request, entity);

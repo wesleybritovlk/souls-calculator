@@ -12,6 +12,7 @@ import com.wesleybritovlk.souls_calculator_api.app.auth.dto.AuthPayload;
 import com.wesleybritovlk.souls_calculator_api.app.auth.dto.AuthPayload.Token;
 import com.wesleybritovlk.souls_calculator_api.app.auth.dto.AuthRequest;
 import com.wesleybritovlk.souls_calculator_api.app.user.UserEntity;
+import com.wesleybritovlk.souls_calculator_api.app.user.UserProjection;
 import com.wesleybritovlk.souls_calculator_api.app.user.dto.UserRequest;
 import com.wesleybritovlk.souls_calculator_api.app.user.dto.UserRequest.Create;
 import com.wesleybritovlk.souls_calculator_api.core.role.RoleEntity;
@@ -22,12 +23,12 @@ import lombok.NoArgsConstructor;
 @Component
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class AuthMapper {
-        protected Token toPayload(AuthRequest.Login request, Optional<UserEntity> entity) {
+        protected Token toPayload(AuthRequest.Login request, Optional<UserProjection.Auth> projection) {
                 return AuthPayload.Token.builder()
-                                .id(entity.get().getId())
+                                .id(projection.get().getId())
                                 .subject(request.email())
-                                .authorities(entity.get().getRoles().stream()
-                                                .map(role -> new SimpleGrantedAuthority(role.getRole().name()))
+                                .authorities(projection.get().getRoles().stream()
+                                                .map(role -> new SimpleGrantedAuthority(role.getName().name()))
                                                 .collect(Collectors.toSet()))
                                 .build();
         }
@@ -37,7 +38,7 @@ public class AuthMapper {
                                 .id(entity.getId())
                                 .subject(request.email())
                                 .authorities(entity.getRoles().stream()
-                                                .map(role -> new SimpleGrantedAuthority(role.getRole().name()))
+                                                .map(role -> new SimpleGrantedAuthority(role.getName().name()))
                                                 .collect(Collectors.toSet()))
                                 .build();
         }
