@@ -1,12 +1,17 @@
 server.port: 8080
 
 spring:
+  config.import: optional:classpath:secret/secrets.yml
   profiles.active: dev
   application:
     name: souls-calculator-api
 
+  jpa.properties.hibernate.default_schema: users
+
   datasource:
-    driver-class-name: org.postgresql.Driver
+    url: ${DB_URL}
+    username: ${DB_USER}
+    password: ${DB_PASS}
     hikari:
       pool-name: SoulsCalculatorPool
       maximum-pool-size: 7
@@ -15,13 +20,24 @@ spring:
       max-lifetime: 1800000
       connection-timeout: 20000
 
-  jpa.properties.hibernate:
-    default_schema: users
-
   flyway:
+    url: ${DB_URL}
+    user: ${DB_USER}
+    password: ${DB_PASS}
     defaultSchema: users
     schemas: public,users
     locations: classpath:db/migration/public,classpath:db/migration/users
     validate-on-migrate: true
 
 logging.pattern.console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+
+rsa:
+  private-key: classpath:${RSA_PRIVATE_PATH}
+  public-key: classpath:${RSA_PUBLIC_PATH}
+
+springdoc:
+  api-docs.enabled: true
+  swagger-ui.enabled: true
+  api-docs.path: /docs/api
+  swagger-ui.path: docs
+  paths-to-exclude: /*
