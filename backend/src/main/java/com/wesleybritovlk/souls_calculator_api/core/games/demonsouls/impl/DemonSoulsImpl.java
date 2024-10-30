@@ -22,11 +22,11 @@ public class DemonSoulsImpl implements DemonSouls {
 
     private static final BigDecimal TWELVE = decimal(12);
 
+    private static final int[] START_SOULS = new int[] {
+            0, 673, 690, 707, 724, 741, 758, 775, 793, 811, 829, 847 };
+
     private static BigDecimal selectOneToTwelve(BigDecimal level) {
-        return new BigDecimal[] { ZERO, decimal(673), decimal(690),
-                decimal(707), decimal(724), decimal(741), decimal(758),
-                decimal(775), decimal(793), decimal(811), decimal(829),
-                decimal(847) }[level.subtract(ONE).intValue()];
+        return decimal(START_SOULS[level.subtract(ONE).intValue()]);
     }
 
     private static BigDecimal calculateWithSoulsForumla(BigDecimal level) {

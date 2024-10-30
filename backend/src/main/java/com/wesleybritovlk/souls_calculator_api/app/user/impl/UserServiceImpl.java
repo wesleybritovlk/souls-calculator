@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.wesleybritovlk.souls_calculator_api.app.user.UserEntity;
+import com.wesleybritovlk.souls_calculator_api.app.user.UserProjection;
 import com.wesleybritovlk.souls_calculator_api.app.user.UserRepository;
 import com.wesleybritovlk.souls_calculator_api.app.user.UserService;
 import com.wesleybritovlk.souls_calculator_api.app.user.dto.UserRequest;
@@ -39,8 +40,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<UserEntity> findByEmail(String email) {
-        return repository.findByEmailAndDeletedAtNull(email);
+    public Optional<UserProjection.Auth> findAuth(String email) {
+        return repository.findAuthByEmail(email);
     }
 
     private Supplier<ResponseStatusException> unauthorizedThrow() {

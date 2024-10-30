@@ -37,6 +37,8 @@ public class SecurityConfig {
         @Value("${rsa.private-key}")
         private RSAPrivateKey privateKey;
 
+        private static final String[] SWAGGER_WHITE_LIST = { "/docs/**", "/v3/api-docs/**", "/swagger-ui.html",
+                        "/swagger-ui/**" };
         private static final String[] WHITE_LIST = { "/", "api/v1/auth/login/**", "api/v1/auth/register/**" };
 
         protected void userRequests(
@@ -50,16 +52,16 @@ public class SecurityConfig {
 
         @Bean
         public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-                return http
-                                .csrf(csrf -> csrf.disable())
+                return http.csrf(csrf -> csrf.disable())
                                 .sessionManagement(session -> session
                                                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                                .oauth2ResourceServer(oauth2 -> oauth2.jwt(withDefaults()))
                                 .authorizeHttpRequests(requests -> {
                                         userRequests(requests);
-                                        requests.requestMatchers(HttpMethod.POST, WHITE_LIST).permitAll();
+                                        requests.requestMatchers(WHITE_LIST).permitAll();
+                                        requests.requestMatchers(SWAGGER_WHITE_LIST).permitAll();
                                         requests.anyRequest().authenticated();
                                 })
-                                .oauth2ResourceServer(oauth2 -> oauth2.jwt(withDefaults()))
                                 .exceptionHandling(exceptionHandling -> exceptionHandling
                                                 .accessDeniedHandler(new AccessDeniedFilter(new ObjectMapper()))
                                                 .authenticationEntryPoint(new AuthEntryPointFilter(new ObjectMapper())))

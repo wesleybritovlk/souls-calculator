@@ -21,8 +21,8 @@ public class RoleFactory implements CommandLineRunner {
 
     private static Set<RoleEntity> generateRoles() {
         return Set.of(
-                RoleEntity.builder().role(Role.ADMIN).build(),
-                RoleEntity.builder().role(Role.USER).build());
+                RoleEntity.builder().name(Role.ADMIN).build(),
+                RoleEntity.builder().name(Role.USER).build());
     }
 
     @Override

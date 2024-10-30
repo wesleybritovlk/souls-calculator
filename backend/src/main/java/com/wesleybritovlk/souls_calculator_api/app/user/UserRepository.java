@@ -12,7 +12,10 @@ import com.wesleybritovlk.souls_calculator_api.app.user.dto.UserRequest.Update;
 
 public interface UserRepository extends JpaRepository<UserEntity, UUID> {
 
-    Optional<UserEntity> findByEmailAndDeletedAtNull(String email);
+    @Query("SELECT u.id AS id, u.email AS email, u.password AS password, r.name AS roles " +
+            "FROM UserEntity u LEFT JOIN u.roles r " +
+            "WHERE u.email = :email AND u.deletedAt IS NULL")
+    Optional<UserProjection.Auth> findAuthByEmail(String email);
 
     Optional<UserEntity> findByIdAndDeletedAtNull(UUID userId);
 

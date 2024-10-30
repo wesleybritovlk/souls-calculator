@@ -33,7 +33,7 @@ public class RoleEntity {
 
     @Enumerated(value = EnumType.STRING)
     @Column(nullable = false)
-    private Role role;
+    private Role name;
 
     public enum Role {
         ADMIN, USER
